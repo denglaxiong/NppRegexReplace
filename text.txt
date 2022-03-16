@@ -1,0 +1,10 @@
+metadata_name	varchar(60)	指标名称
+metadata_fetch_way	varchar(60)	指标获取方式hive：mysql：http
+datasource_id	varchar(60)	数据源id
+metadata_fetch_sql	varchar(60)	指标获取sql
+http_connection_id	varchar(60)	http连接id
+http_method	varchar(60)	http请求方式get,post
+http_data_type	varchar(60)	http请求数据类型json，from
+http_request_way	varchar(60)	http请求类型
+http_param_in	varchar(60)	入参
+http_param_out	varchar(60)	出参
