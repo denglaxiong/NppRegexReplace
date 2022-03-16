@@ -1,0 +1,233 @@
+// ConsoleApplication1.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
+//
+
+#include <iostream>
+#include <string>
+#include <regex>
+#include <fstream>
+#include <locale>
+#include <codecvt>
+using namespace std;
+
+// 字符串分隔函数
+vector<wstring> wsplit(wstring origin_str, wstring splitStr) {
+    /*string origin_str = "123#ab##cctry.com#";
+    vector<string> res_vec;*/
+    vector<wstring> res_vec;
+    size_t ipos = 0, epos = 0;
+
+    // 按照#进行分割，并存入vector中
+    while ((epos = origin_str.find(splitStr, ipos)) != -1) {
+        wstring str = origin_str.substr(ipos, epos - ipos);
+        if (!str.empty()) {
+            res_vec.push_back(str);
+        }
+        ipos = epos + 1;
+    }
+    wstring str = origin_str.substr(ipos, epos - ipos);
+    res_vec.push_back(str);
+    wcout << splitStr << "分隔的字符串个数" << res_vec.size() << endl;
+    return res_vec;
+}
+vector<string> split(string origin_str, string splitStr) {
+    /*string origin_str = "123#ab##cctry.com#";
+    vector<string> res_vec;*/
+    vector<string> res_vec;
+    size_t ipos = 0, epos = 0;
+
+    // 按照#进行分割，并存入vector中
+    while ((epos = origin_str.find(splitStr, ipos)) != -1) {
+        string str = origin_str.substr(ipos, epos - ipos);
+        if (str != "") {
+            res_vec.push_back(str);
+        }
+        ipos = epos + 1;
+    }
+    string str = origin_str.substr(ipos, epos - ipos);
+    res_vec.push_back(str);
+    cout << splitStr << "分隔的字符串个数" << res_vec.size() << endl;
+    return res_vec;
+}
+//字符串操作 及正则操作
+void test() {
+    std::cout << "Hello World!\n";
+    printf("第一次打印console---%d\n", 33);
+    cout << "wout console count" << "\n";
+    wcout << L"Hello, world!-count" << endl;
+    regex r1("[0-9]+");
+
+    std::wstring strTest = L"1000001_v2000_v2000_v2000.csv";
+    std::wsmatch wm;
+    std::wregex wrx(L"(\\d+)_v(\\d+)\\.csv");
+    std::wregex wrx2(L"\\d+");
+    //regex_search
+    //if (std::regex_search(strTest, wm, wrx2))
+    //{
+    //    for (auto it : wm)
+    //        std::wcout << it.str().c_str() << std::endl;
+    //}
+    //else {
+    //    wcout << "没有匹配到" << endl;
+    //}
+
+    //regex_match
+ /*   if (std::regex_match(strTest, wm, wrx))
+    {
+        for (auto it : wm)
+            std::wcout << it.str().c_str() << std::endl;
+    }
+    else {
+        wcout << "没有匹配到" << endl;
+    }*/
+
+
+    //正则替换示例
+    //string str = "Hello_2018 我是 299 麦 霸 3232 huanyinglailiao 889!";
+    //regex pattern("我是\\s+\\d+");
+    //cout << regex_replace(str, pattern, "VC") << endl;	//输出：_2018，将Hello替换为""
+
+    //string str = "Hello_2018, 我是; 299 麦 霸 ,3232 huanyi;nglailiao 889!";
+    //regex pattern(";");
+    //cout << regex_replace(str, pattern, "VC") << endl;	//输出：_2018，将Hello替换为""
+
+    //字符串分隔示例
+    string str = "ab,cd;dengl,axi,ong";
+    vector<string> res_vec = split(str, ";");
+
+    //// 打印结果
+    //for (int i = 0; i < res_vec.size(); ++i) {
+    //    cout << "parent= " << res_vec[i]<<endl;
+    //    vector<string> res_vec2 = split(res_vec[i], ",");
+    //    for (int m = 0; m < res_vec2.size(); ++m) {
+    //        cout << ", " << res_vec2[m] << endl;
+    //    }
+    //}
+}
+//文件操作 窄字节 ansi
+void test2() {
+    //short var = 20000;
+    //ofstream fs;
+    //fs.open("d:\\123.txt");
+    //if (!fs) {
+    //    cout << "打开失败" << endl;
+    //}
+    //fs << var <<endl;
+    //fs << "20093" << endl;
+    //fs << "邓腊雄" << endl;
+    //fs.close();
+
+
+    string value = "";
+    ifstream fi;
+    fi.open("d:\\123.txt");
+    if (!fi) {
+        cout << "打开失败" << endl;
+    }
+    
+    /*bool boo = true;
+    while (boo) {
+        fi >> value;
+        boo = fi.good();
+        if (!value.empty()) {
+            cout << value << "=" << boo << endl;
+        }
+        value = "";
+    }*/
+
+    bool boo = true;
+    while (getline(fi, value)) {
+        boo = fi.good();
+        if (!value.empty()) {
+            cout << value << "=" << boo << endl;
+        }
+        value = "";
+    }
+}
+//文件操作 宽字节 utf-8
+void test3() {
+    std::locale loc(std::locale(), new std::codecvt_utf8<wchar_t>);
+    wcout.imbue(locale(""));
+    /*
+
+    wofstream wfout(L"d:\\test.txt");
+    wfout.imbue(loc);
+
+    wfout << L"邓腊雄" << endl;
+    wfout << L"山西人" << endl;
+    wfout << L"在中化" << endl;
+    wfout << L"mama de ai" << endl;
+
+    wfout.close();*/
+
+
+
+    wstring wstr;
+    wifstream wfin(L"d:\\test.txt");
+    wfin.imbue(loc);
+    while (wfin >> wstr)
+    {
+        wcout << wstr << endl;
+    }
+
+    wfin.close();
+}
+//文件 内容正则替换
+void fileTextRegexReplace() {
+    std::locale loc(std::locale(), new std::codecvt_utf8<wchar_t>);
+    wcout.imbue(locale(""));
+    wstring pstr1 = L"";
+    wstring pstr2 = L"";
+
+    wstring wstrreg;
+    wifstream wfinreg(L"D:\\123.txt");
+    wfinreg.imbue(loc);
+    cout << wfinreg.is_open() << endl;
+    getline(wfinreg, wstrreg);
+
+    wfinreg.close();
+    vector<wstring> v = wsplit(wstrreg, L";");
+    if (v.size()>1) {
+        pstr1 = v[0];
+        pstr2 = v[1];
+    }
+    wcout << pstr1 << L"==" << pstr2 << endl;
+    wstring wstr;
+    wifstream wfin(L"d:\\test.txt");
+    wfin.imbue(loc);
+    while (getline(wfin, wstr))
+    {
+        wcout << wstr << endl;
+        wregex pattern(pstr1);
+        wstring replaceWstr = regex_replace(wstr, pattern, pstr2);
+        wcout << replaceWstr << endl;
+
+    }
+
+    wfin.close();
+
+}
+int main()
+{
+    fileTextRegexReplace();
+    /*std::locale loc(std::locale(), new std::codecvt_utf8<wchar_t>);
+    wcout.imbue(locale(""));
+    wstring wstr;
+    wifstream wfin(L"d:\\test.txt");
+    wfin.imbue(loc);
+    while (getline(wfin, wstr))
+    {
+        wcout << wstr << endl;
+    }
+
+    wfin.close();*/
+
+
+    
+
+}
+
+
+
+
+
+
